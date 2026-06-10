@@ -18,73 +18,73 @@ export default function Navbar({ onOpenBooking, onScrollToSection }: NavbarProps
 
   return (
     <>
-      <nav className="fixed top-0 left-0 w-full z-50 px-4 sm:px-8 py-5 md:px-16 md:py-8 flex justify-between items-center bg-gradient-to-b from-luxury-black/90 to-transparent backdrop-blur-[2px]">
-        <div className="flex items-center gap-12">
-          {/* Imperial Logo Crest */}
-          <a
-            href="#hero"
-            onClick={(e) => handleMobileScroll("hero", e)}
-            className="flex items-center gap-2 sm:gap-3 group"
-          >
-            <div className="relative w-8 h-8 bg-luxury-red flex items-center justify-center text-[10px] text-luxury-gold font-bold border border-luxury-gold/40 group-hover:border-luxury-gold transition-colors duration-500 shadow-md flex-shrink-0">
-              金
-            </div>
-            <div className="flex flex-col">
-              <span className="font-serif font-bold text-luxury-ivory tracking-[0.2em] text-xs xs:text-sm leading-none uppercase transition-colors duration-500 group-hover:text-luxury-gold">
-                TIÊN TỬU • XIANG YANG
-              </span>
-              <span className="text-[7px] xs:text-[8px] font-sans font-normal tracking-[0.4em] text-luxury-gold/85 mt-1">
-                TRIỀU ĐÌNH MỸ VỊ
-              </span>
-            </div>
-          </a>
-
-          {/* Floating Menu Links */}
-          <div className="hidden lg:flex items-center gap-8 text-[11px] font-sans font-medium tracking-[0.3em] text-luxury-ivory/60">
-            <a
-              href="#story"
-              onClick={(e) => onScrollToSection?.("story", e)}
-              className="hover:text-luxury-gold transition-colors duration-300 relative py-1 group"
-            >
-              DI SẢN
-              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-luxury-gold transition-all duration-300 group-hover:w-full" />
-            </a>
-            <a
-              href="#signature"
-              onClick={(e) => onScrollToSection?.("signature", e)}
-              className="hover:text-luxury-gold transition-colors duration-300 relative py-1 group"
-            >
-              VỊT KHÁNH HOÀNG
-              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-luxury-gold transition-all duration-300 group-hover:w-full" />
-            </a>
-            <a
-              href="#gallery"
-              onClick={(e) => onScrollToSection?.("gallery", e)}
-              className="hover:text-luxury-gold transition-colors duration-300 relative py-1 group"
-            >
-              MỸ VỊ KÝ
-              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-luxury-gold transition-all duration-300 group-hover:w-full" />
-            </a>
-            <a
-              href="#chef"
-              onClick={(e) => onScrollToSection?.("chef", e)}
-              className="hover:text-luxury-gold transition-colors duration-300 relative py-1 group"
-            >
-              QUỐC SƯ ĐẰNG
-              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-luxury-gold transition-all duration-300 group-hover:w-full" />
-            </a>
-            <a
-              href="#ingredients"
-              onClick={(e) => onScrollToSection?.("ingredients", e)}
-              className="hover:text-luxury-gold transition-colors duration-300 relative py-1 group"
-            >
-              THẢO DƯỢC KÝ
-              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-luxury-gold transition-all duration-300 group-hover:w-full" />
-            </a>
+      <nav className="fixed top-0 left-0 w-full z-50 px-4 sm:px-8 py-5 md:px-16 md:py-8 grid grid-cols-[auto_1fr_auto] items-center bg-gradient-to-b from-luxury-black/90 to-transparent backdrop-blur-[2px]">
+        {/* Imperial Logo Crest */}
+        <a
+          href="#hero"
+          onClick={(e) => handleMobileScroll("hero", e)}
+          className="flex items-center gap-2 sm:gap-3 group"
+        >
+          <div className="relative w-8 h-8 bg-luxury-red flex items-center justify-center text-[10px] text-luxury-gold font-bold border border-luxury-gold/40 group-hover:border-luxury-gold transition-colors duration-500 shadow-md flex-shrink-0">
+            金
           </div>
-        </div>
+          <div className="flex flex-col">
+            <span className="font-serif font-bold text-luxury-ivory tracking-[0.2em] text-xs xs:text-sm leading-none uppercase transition-colors duration-500 group-hover:text-luxury-gold">
+              TIÊN TỬU • XIANG YANG
+            </span>
+            <span className="text-[7px] xs:text-[8px] font-sans font-normal tracking-[0.4em] text-luxury-gold/85 mt-1">
+              TRIỀU ĐÌNH MỸ VỊ
+            </span>
+          </div>
+        </a>
 
-        <div className="flex items-center gap-3 sm:gap-4">
+        {/* Floating Menu Links — centered */}
+        <div className="hidden lg:flex items-center justify-center gap-8 text-[11px] font-sans font-medium tracking-[0.3em] text-luxury-ivory/60">
+          <a
+            href="#story"
+            onClick={(e) => onScrollToSection?.("story", e)}
+            className="hover:text-luxury-gold transition-colors duration-300 relative py-1 group"
+          >
+            DI SẢN
+            <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-luxury-gold transition-all duration-300 group-hover:w-full" />
+          </a>
+          <a
+            href="#signature"
+            onClick={(e) => onScrollToSection?.("signature", e)}
+            className="hover:text-luxury-gold transition-colors duration-300 relative py-1 group"
+          >
+            VỊT KHÁNH HOÀNG
+            <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-luxury-gold transition-all duration-300 group-hover:w-full" />
+          </a>
+          <a
+            href="#gallery"
+            onClick={(e) => onScrollToSection?.("gallery", e)}
+            className="hover:text-luxury-gold transition-colors duration-300 relative py-1 group"
+          >
+            MỸ VỊ KÝ
+            <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-luxury-gold transition-all duration-300 group-hover:w-full" />
+          </a>
+          <a
+            href="#chef"
+            onClick={(e) => onScrollToSection?.("chef", e)}
+            className="hover:text-luxury-gold transition-colors duration-300 relative py-1 group"
+          >
+            QUỐC SƯ ĐẰNG
+            <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-luxury-gold transition-all duration-300 group-hover:w-full" />
+          </a>
+          <a
+            href="#ingredients"
+            onClick={(e) => onScrollToSection?.("ingredients", e)}
+            className="hover:text-luxury-gold transition-colors duration-300 relative py-1 group"
+          >
+            THẢO DƯỢC KÝ
+            <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-luxury-gold transition-all duration-300 group-hover:w-full" />
+          </a>
+        </div>
+        {/* On mobile: empty center column */}
+        <div className="lg:hidden" />
+
+        <div className="flex items-center justify-end gap-3 sm:gap-4">
           {/* Booking Button (responsive sizes) */}
           <button
             onClick={onOpenBooking}
