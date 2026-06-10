@@ -153,7 +153,7 @@ export default function SignatureSection() {
     <div
       ref={pinSectionRef}
       id="signature"
-      className="relative w-full min-h-screen md:h-screen bg-luxury-black overflow-hidden flex items-center justify-center transition-colors duration-200 py-16 md:py-0"
+      className="relative w-full min-h-screen md:h-screen bg-luxury-black overflow-hidden flex items-center justify-center py-16 md:py-0"
     >
       {/* Decorative Golden Floating Characters */}
       <div className="absolute left-8 top-12 md:left-16 md:top-20 z-10 text-[9px] font-sans font-extrabold tracking-[0.5em] text-luxury-gold flex flex-col gap-2 uppercase">
@@ -181,7 +181,7 @@ export default function SignatureSection() {
             </span>
             <h2
               ref={textLeftRef}
-              className="font-display font-black text-4xl sm:text-7xl md:text-8xl xl:text-9xl text-luxury-ivory leading-[0.95] uppercase tracking-normal"
+              className="font-display font-black text-4xl sm:text-7xl md:text-8xl xl:text-9xl text-luxury-ivory leading-[0.95] uppercase tracking-normal will-change-transform"
             >
               VỊT QUAY <br />
               <span className="text-luxury-gold">BẮC KINH</span>
@@ -191,7 +191,7 @@ export default function SignatureSection() {
           {/* Right Floating Details */}
           <div
             ref={textRightRef}
-            className="md:max-w-md flex flex-col items-start gap-6 bg-luxury-black/60 border border-luxury-gold/15 backdrop-blur-md p-6 md:p-10 pointer-events-auto"
+            className="md:max-w-md flex flex-col items-start gap-6 bg-luxury-black/60 border border-luxury-gold/15 backdrop-blur-md p-6 md:p-10 pointer-events-auto will-change-transform"
           >
             <span className="text-luxury-red font-sans text-[10px] font-bold tracking-[0.3em] uppercase">
               THƯƠNG HIỆU HOÀNG GIA ĐẠI DIỆN
@@ -225,7 +225,7 @@ export default function SignatureSection() {
             src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?q=80&w=1800&auto=format&fit=crop"
             alt="Vịt Quay Bắc Kinh Glistening Glaze"
             referrerPolicy="no-referrer"
-            className="w-full h-full object-cover filter brightness-[0.6] contrast-[1.1] origin-center"
+            className="w-full h-full object-cover filter brightness-[0.6] contrast-[1.1] origin-center will-change-transform"
           />
           {/* Edge shadow overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-luxury-black/90 via-transparent to-luxury-black/80 md:bg-radial-gradient" />

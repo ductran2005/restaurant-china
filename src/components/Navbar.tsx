@@ -46,7 +46,7 @@ export default function Navbar({ onOpenBooking, onScrollToSection }: NavbarProps
             className="hover:text-luxury-gold transition-colors duration-300 relative py-1 group"
           >
             DI SẢN
-            <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-luxury-gold transition-all duration-300 group-hover:w-full" />
+            <span className="absolute bottom-0 left-0 h-[1px] bg-luxury-gold w-full scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100" />
           </a>
           <a
             href="#signature"
@@ -54,7 +54,7 @@ export default function Navbar({ onOpenBooking, onScrollToSection }: NavbarProps
             className="hover:text-luxury-gold transition-colors duration-300 relative py-1 group"
           >
             VỊT KHÁNH HOÀNG
-            <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-luxury-gold transition-all duration-300 group-hover:w-full" />
+            <span className="absolute bottom-0 left-0 h-[1px] bg-luxury-gold w-full scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100" />
           </a>
           <a
             href="#gallery"
@@ -62,7 +62,7 @@ export default function Navbar({ onOpenBooking, onScrollToSection }: NavbarProps
             className="hover:text-luxury-gold transition-colors duration-300 relative py-1 group"
           >
             MỸ VỊ KÝ
-            <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-luxury-gold transition-all duration-300 group-hover:w-full" />
+            <span className="absolute bottom-0 left-0 h-[1px] bg-luxury-gold w-full scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100" />
           </a>
           <a
             href="#chef"
@@ -70,7 +70,7 @@ export default function Navbar({ onOpenBooking, onScrollToSection }: NavbarProps
             className="hover:text-luxury-gold transition-colors duration-300 relative py-1 group"
           >
             QUỐC SƯ ĐẰNG
-            <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-luxury-gold transition-all duration-300 group-hover:w-full" />
+            <span className="absolute bottom-0 left-0 h-[1px] bg-luxury-gold w-full scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100" />
           </a>
           <a
             href="#ingredients"
@@ -78,7 +78,7 @@ export default function Navbar({ onOpenBooking, onScrollToSection }: NavbarProps
             className="hover:text-luxury-gold transition-colors duration-300 relative py-1 group"
           >
             THẢO DƯỢC KÝ
-            <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-luxury-gold transition-all duration-300 group-hover:w-full" />
+            <span className="absolute bottom-0 left-0 h-[1px] bg-luxury-gold w-full scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100" />
           </a>
         </div>
         {/* On mobile: empty center column */}

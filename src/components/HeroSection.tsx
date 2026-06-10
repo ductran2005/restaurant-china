@@ -218,7 +218,7 @@ export default function HeroSection({ onScrollToStory, onOpenBooking }: HeroSect
           src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?q=80&w=1800&auto=format&fit=crop"
           alt="Tinh Hoa Vịt Quay Bắc Kinh"
           referrerPolicy="no-referrer"
-          className="w-full h-full object-cover origin-center opacity-0 filter brightness-[0.4] contrast-[1.1]"
+          className="w-full h-full object-cover origin-center opacity-0 filter brightness-[0.4] contrast-[1.1] will-change-transform"
         />
         {/* Soft, dramatic radial vignette gradient */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,#0B0B0B_80%)]" />
@@ -259,17 +259,17 @@ export default function HeroSection({ onScrollToStory, onOpenBooking }: HeroSect
 
           <h1 className="font-serif font-black text-[2.4rem] xs:text-[3.2rem] sm:text-[4.5rem] md:text-[7.5rem] lg:text-[9rem] xl:text-[10rem] text-luxury-ivory leading-[1.1] md:leading-[1.15] tracking-normal uppercase flex flex-col gap-0.5 md:gap-3 italic select-none md:-ml-6 lg:-ml-12">
             <span className="overflow-hidden block py-2 md:py-4 -my-2 md:-my-4">
-              <span ref={title1Ref} className="block origin-left hover:text-luxury-gold transition-colors duration-500 whitespace-nowrap text-luxury-ivory py-1">
+              <span ref={title1Ref} className="block origin-left hover:text-luxury-gold transition-colors duration-500 whitespace-nowrap text-luxury-ivory py-1 opacity-0 will-change-transform">
                 ẨM THỰC
               </span>
             </span>
             <span className="overflow-hidden block py-2 md:py-4 -my-2 md:-my-4">
-              <span ref={title2Ref} className="block text-transparent bg-clip-text bg-gradient-to-r from-luxury-gold via-luxury-ivory to-luxury-red whitespace-nowrap py-1">
+              <span ref={title2Ref} className="block text-transparent bg-clip-text bg-gradient-to-r from-luxury-gold via-luxury-ivory to-luxury-red whitespace-nowrap py-1 opacity-0 will-change-transform">
                 TRUNG HOA
               </span>
             </span>
             <span className="overflow-hidden block py-2 md:py-4 -my-2 md:-my-4">
-              <span ref={title3Ref} className="block hover:text-luxury-red transition-all duration-700 whitespace-nowrap text-luxury-ivory py-1">
+              <span ref={title3Ref} className="block hover:text-luxury-red transition-all duration-700 whitespace-nowrap text-luxury-ivory py-1 opacity-0 will-change-transform">
                 ĐỈNH CAO
               </span>
             </span>
@@ -280,12 +280,12 @@ export default function HeroSection({ onScrollToStory, onOpenBooking }: HeroSect
         <div className="shrink-0 w-full md:w-[340px] xl:w-[380px] flex flex-col items-start md:items-end gap-6 md:gap-8 md:pb-6 md:text-right">
           <p
             ref={subRef}
-            className="text-luxury-ivory/80 text-sm xs:text-base md:text-xl lg:text-2xl font-serif italic leading-relaxed tracking-wide border-l md:border-l-0 md:border-r border-luxury-gold/30 pl-4 md:pl-0 md:pr-4"
+            className="text-luxury-ivory/80 text-sm xs:text-base md:text-xl lg:text-2xl font-serif italic leading-relaxed tracking-wide border-l md:border-l-0 md:border-r border-luxury-gold/30 pl-4 md:pl-0 md:pr-4 opacity-0 will-change-transform"
           >
             Tinh hoa vịt quay Bắc Kinh được tái hiện bằng nghệ thuật hiện đại, mang đến hành trình vị giác đậm chất đế vương.
           </p>
 
-          <div ref={ctaRef} className="flex flex-col sm:flex-row sm:items-center md:justify-end gap-4 md:gap-6 w-full">
+          <div ref={ctaRef} className="flex flex-col sm:flex-row sm:items-center md:justify-end gap-4 md:gap-6 w-full opacity-0 will-change-transform">
             <button
               onClick={onOpenBooking}
               className="bg-luxury-gold hover:bg-gold-hover text-luxury-black font-display font-bold text-xs tracking-[0.25em] h-12 md:h-14 px-8 md:px-10 transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-2xl shadow-luxury-gold/10 whitespace-nowrap rounded-none"
