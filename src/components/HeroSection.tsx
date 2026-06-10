@@ -246,9 +246,9 @@ export default function HeroSection({ onScrollToStory, onOpenBooking }: HeroSect
       </div>
 
       {/* Content Container */}
-      <div className="relative w-full max-w-7xl mx-auto px-6 sm:px-8 md:px-16 z-25 flex flex-col md:flex-row md:items-end justify-between gap-8 md:gap-12 select-none pt-12 md:pt-32 pb-4">
+      <div className="relative w-full px-6 sm:px-8 md:px-16 xl:px-24 2xl:px-32 z-25 flex flex-col md:flex-row md:items-end justify-between gap-8 md:gap-12 select-none pt-12 md:pt-32 pb-4 h-full">
         {/* Left Side: Massive Editorial Typography */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-none flex flex-col">
           {/* Imperial Crest Detail */}
           <div className="flex items-center gap-4 mb-4 md:mb-6 group opacity-90">
             <div className="w-8 md:w-12 h-[1px] bg-luxury-gold"></div>
@@ -277,7 +277,7 @@ export default function HeroSection({ onScrollToStory, onOpenBooking }: HeroSect
         </div>
 
         {/* Right Side: Subtitle, CTA and Scroll Indicator */}
-        <div className="max-w-md flex flex-col items-start md:items-end gap-6 md:gap-8 md:pb-6 ml-auto md:ml-0 md:text-right">
+        <div className="shrink-0 w-full md:w-[340px] xl:w-[380px] flex flex-col items-start md:items-end gap-6 md:gap-8 md:pb-6 md:text-right">
           <p
             ref={subRef}
             className="text-luxury-ivory/80 text-sm xs:text-base md:text-xl lg:text-2xl font-serif italic leading-relaxed tracking-wide border-l md:border-l-0 md:border-r border-luxury-gold/30 pl-4 md:pl-0 md:pr-4"
