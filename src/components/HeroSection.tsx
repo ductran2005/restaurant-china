@@ -215,7 +215,7 @@ export default function HeroSection({ onScrollToStory, onOpenBooking }: HeroSect
       >
         <img
           ref={bgImgRef}
-          src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?q=80&w=1800&auto=format&fit=crop"
+          src="/images/peking-duck.png"
           alt="Tinh Hoa Vịt Quay Bắc Kinh"
           referrerPolicy="no-referrer"
           className="w-full h-full object-cover origin-center opacity-0 filter brightness-[0.4] contrast-[1.1] will-change-transform"

@@ -222,7 +222,7 @@ export default function SignatureSection() {
         <div className="w-full h-full md:w-[70vw] md:h-[75vh] relative overflow-hidden border border-luxury-gold/10 shadow-[0_0_100px_rgba(0,0,0,0.8)]">
           <img
             ref={scaleImageRef}
-            src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?q=80&w=1800&auto=format&fit=crop"
+            src="/images/peking-duck.png"
             alt="Vịt Quay Bắc Kinh Glistening Glaze"
             referrerPolicy="no-referrer"
             className="w-full h-full object-cover filter brightness-[0.6] contrast-[1.1] origin-center will-change-transform"

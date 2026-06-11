@@ -133,7 +133,7 @@ export default function MasterChefSection() {
               className="w-full h-full"
             >
               <img
-                src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?q=80&w=1200&auto=format&fit=crop"
+                src="/images/master-chef.png"
                 alt="Master Chef Tan Thien Hung Portrait"
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover origin-center transition-transform duration-1000 group-hover:scale-105 filter brightness-[0.7] contrast-[1.1]"
