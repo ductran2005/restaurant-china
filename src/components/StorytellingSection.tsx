@@ -107,7 +107,9 @@ export default function StorytellingSection() {
             <div className="absolute inset-0 bg-luxury-black/30 z-10 transition-colors duration-700 group-hover:bg-luxury-black/10" />
             <div ref={imageRevealRef} className="w-full h-full">
               <img
-                src="/images/gongfu-tea.png"
+              loading="lazy"
+              decoding="async"
+                src="/images/gongfu-tea.webp"
                 alt="Imperial Chinese tea ritual"
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover filter brightness-[0.7] contrast-[1.1] transition-transform duration-1000 scale-105"

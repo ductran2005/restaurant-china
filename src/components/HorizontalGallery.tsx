@@ -1,16 +1,18 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { FEATURED_DISHES } from "../data";
+import { FEATURED_DISHES, type FeaturedDish } from "../data";
 import { Plus, ArrowRight } from "lucide-react";
+import DishDetailModal from "./DishDetailModal";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function HorizontalGallery() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const [selectedDish, setSelectedDish] = useState<FeaturedDish | null>(null);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -128,6 +130,8 @@ export default function HorizontalGallery() {
             {/* Background Image with slight tilt/zoom scale effect on hover */}
             <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
               <img
+              loading="lazy"
+              decoding="async"
                 src={dish.imageUrl}
                 alt={dish.vietnameseName}
                 referrerPolicy="no-referrer"
@@ -175,11 +179,15 @@ export default function HorizontalGallery() {
                 ))}
               </div>
 
-              {/* Fake hover details button to increase emotional depth */}
-              <div className="mt-8 flex items-center gap-2 group-hover:translate-x-3 transition-transform duration-500 ease-out text-luxury-gold/60 group-hover:text-luxury-gold">
+              <button
+                type="button"
+                onClick={() => setSelectedDish(dish)}
+                aria-label={`Xem chi tiết ${dish.vietnameseName}`}
+                className="mt-8 flex items-center gap-2 border-b border-luxury-gold/30 pb-2 text-luxury-gold/70 transition-all duration-500 ease-out hover:border-luxury-gold hover:text-luxury-gold group-hover:translate-x-3"
+              >
                 <span className="font-display text-[10px] tracking-[0.3em] uppercase">CHI TIẾT MỸ VỊ</span>
                 <ArrowRight className="w-3.5 h-3.5" />
-              </div>
+              </button>
             </div>
           </div>
         ))}
@@ -198,6 +206,8 @@ export default function HorizontalGallery() {
 
       {/* Frame border lines - Gallery bottom decoration */}
       <div className="absolute left-8 bottom-12 right-8 h-[1px] bg-luxury-ivory/5 pointer-events-none hidden md:block" />
+
+      <DishDetailModal dish={selectedDish} onClose={() => setSelectedDish(null)} />
     </section>
   );
 }

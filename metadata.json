@@ -1,0 +1,6 @@
+{
+  "name": "Ẩm Thực Trung Hoa Đỉnh Cao",
+  "description": "Trải nghiệm ẩm thực vịt quay Bắc Kinh thượng hạng thông qua hành trình nghệ thuật điện ảnh sống động.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

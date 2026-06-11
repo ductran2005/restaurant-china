@@ -1,15 +1,16 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ArrowUpRight, Leaf, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { INGREDIENTS } from "../data";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function IngredientsSection() {
   const containerRef = useRef<HTMLElement>(null);
+  const imageWrapRef = useRef<HTMLDivElement>(null);
   const [activeId, setActiveId] = useState(INGREDIENTS[0]?.id ?? "");
   const activeIngredient =
     INGREDIENTS.find((ingredient) => ingredient.id === activeId) ?? INGREDIENTS[0];
@@ -50,21 +51,103 @@ export default function IngredientsSection() {
     };
   }, []);
 
+  // Pin the section and switch ingredients as the user scrolls through it.
+  // Desktop only — on mobile the stacked layout is taller than the viewport,
+  // so pinning would cut off the heading and detail panel.
   useEffect(() => {
-    if (!activeIngredient) return;
+    const section = containerRef.current;
+    if (!section || INGREDIENTS.length === 0) return;
 
-    const activeCard = containerRef.current?.querySelector(
-      `[data-ingredient-id="${activeIngredient.id}"]`,
+    const STEP = 360; // scroll px per ingredient
+
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 1024px)", () => {
+      const trigger = ScrollTrigger.create({
+        trigger: section,
+        start: "top top",
+        end: () => "+=" + INGREDIENTS.length * STEP,
+        pin: true,
+        anticipatePin: 1,
+        snap: {
+          // Snap to the CENTER of each item's scroll segment so a click
+          // (which targets the center) never gets bumped to a neighbor
+          snapTo: INGREDIENTS.map((_, i) => (i + 0.5) / INGREDIENTS.length),
+          duration: { min: 0.2, max: 0.5 },
+          ease: "power1.inOut",
+        },
+        onUpdate: (self) => {
+          const index = Math.min(
+            INGREDIENTS.length - 1,
+            Math.floor(self.progress * INGREDIENTS.length),
+          );
+          setActiveId(INGREDIENTS[index].id);
+        },
+      });
+
+      return () => {
+        trigger.kill();
+      };
+    });
+
+    return () => mm.revert();
+  }, []);
+
+  // Mobile has no pinned scroll, so auto-rotate through the ingredients
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1023px)");
+    let intervalId: number | undefined;
+
+    const update = () => {
+      if (intervalId !== undefined) {
+        window.clearInterval(intervalId);
+        intervalId = undefined;
+      }
+      if (mq.matches) {
+        intervalId = window.setInterval(() => {
+          setActiveId((prev) => {
+            const i = INGREDIENTS.findIndex((item) => item.id === prev);
+            return INGREDIENTS[(i + 1) % INGREDIENTS.length].id;
+          });
+        }, 4000);
+      }
+    };
+
+    update();
+    mq.addEventListener("change", update);
+
+    return () => {
+      if (intervalId !== undefined) window.clearInterval(intervalId);
+      mq.removeEventListener("change", update);
+    };
+  }, []);
+
+  // Animate the image swap: gold-edged wipe reveal + slow zoom settle
+  useLayoutEffect(() => {
+    const wrap = imageWrapRef.current;
+    if (!wrap) return;
+
+    const img = wrap.querySelector("img");
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+    tl.fromTo(
+      wrap,
+      { clipPath: "inset(0% 100% 0% 0%)", autoAlpha: 0.35 },
+      { clipPath: "inset(0% 0% 0% 0%)", autoAlpha: 1, duration: 0.7 },
     );
-
-    if (activeCard) {
-      gsap.fromTo(
-        activeCard,
-        { scale: 0.985 },
-        { scale: 1, duration: 0.35, ease: "power2.out", clearProps: "transform" },
+    if (img) {
+      tl.fromTo(
+        img,
+        { scale: 1.14, x: 36 },
+        { scale: 1, x: 0, duration: 1, clearProps: "transform" },
+        0,
       );
     }
-  }, [activeIngredient]);
+
+    return () => {
+      tl.kill();
+    };
+  }, [activeId]);
 
   return (
     <section
@@ -115,24 +198,6 @@ export default function IngredientsSection() {
                 className="mt-6 animate-fadeIn border-t border-luxury-gold/20 pt-5"
                 aria-live="polite"
               >
-                {activeIngredient.imageUrl && (
-                  <div className="group/image relative mb-4 h-40 max-w-lg overflow-hidden border border-luxury-gold/25 bg-[#0d0d0b] xl:h-44">
-                    <img
-                      src={activeIngredient.imageUrl}
-                      alt={`Nguyên liệu ${activeIngredient.name}`}
-                      className="h-full w-full object-contain transition-transform duration-1000 group-hover/image:scale-[1.02]"
-                    />
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#090908]/80 via-transparent to-transparent" />
-                    <div className="pointer-events-none absolute inset-3 border border-luxury-gold/15" />
-                    <span className="absolute bottom-4 left-4 font-sans text-[8px] uppercase tracking-[0.3em] text-luxury-gold/80">
-                      Nguyên liệu tuyển chọn
-                    </span>
-                    <span className="absolute bottom-3 right-4 font-display text-3xl text-luxury-gold/80">
-                      {activeIngredient.character}
-                    </span>
-                  </div>
-                )}
-
                 <div className="mb-3 flex items-start justify-between gap-4">
                   <div>
                     <span className="mb-2 block font-sans text-[9px] uppercase tracking-[0.35em] text-luxury-gold/65">
@@ -157,86 +222,40 @@ export default function IngredientsSection() {
           </div>
 
           <div className="relative">
-            <div className="absolute bottom-0 left-[2.1rem] top-0 w-px bg-gradient-to-b from-luxury-gold/40 via-luxury-gold/10 to-transparent md:left-[3.1rem]" />
-
-            <div className="space-y-2">
-              {INGREDIENTS.map((ingredient, index) => {
-                const isActive = ingredient.id === activeIngredient?.id;
-
-                return (
-                  <button
-                    key={ingredient.id}
-                    type="button"
-                    data-herb-reveal
-                    data-ingredient-id={ingredient.id}
-                    onClick={() => setActiveId(ingredient.id)}
-                    className={`group relative grid w-full grid-cols-[4.25rem_1fr_auto] items-center gap-4 overflow-hidden border px-3 py-4 text-left opacity-100 transition-all duration-500 md:grid-cols-[5rem_1fr_auto] md:gap-5 md:px-4 lg:py-4 xl:py-5 ${
-                      isActive
-                        ? "border-luxury-gold/60 bg-gradient-to-r from-luxury-gold/[0.13] via-luxury-gold/[0.06] to-transparent shadow-[0_18px_60px_rgba(0,0,0,0.28)]"
-                        : "border-luxury-ivory/[0.1] bg-luxury-ivory/[0.025] hover:border-luxury-gold/35 hover:bg-luxury-gold/[0.05]"
-                    }`}
-                    aria-pressed={isActive}
-                    aria-label={`Khám phá ${ingredient.name}`}
-                  >
-                    <span
-                      className={`absolute inset-y-0 left-0 w-0.5 bg-luxury-gold transition-opacity duration-500 ${
-                        isActive ? "opacity-100" : "opacity-0"
-                      }`}
-                    />
-                    <div
-                      className={`relative z-10 flex h-12 w-12 items-center justify-center rounded-full border bg-[#0d0d0b] font-display text-xs transition-all duration-500 md:h-14 md:w-14 md:text-sm ${
-                        isActive
-                          ? "scale-105 border-luxury-gold text-luxury-gold shadow-[0_0_35px_rgba(212,175,55,0.12)]"
-                          : "border-luxury-gold/20 text-luxury-gold/65 group-hover:border-luxury-gold/55 group-hover:text-luxury-gold"
-                      }`}
-                    >
-                      {ingredient.character}
-                      {isActive && (
-                        <span className="absolute -right-1 bottom-0 h-2 w-2 rounded-full bg-luxury-red" />
-                      )}
-                    </div>
-
-                    <div>
-                      <span className="mb-2 flex items-center gap-2 font-sans text-[8px] uppercase tracking-[0.28em] text-luxury-gold/45">
-                        <Leaf className="h-3 w-3" />
-                        Hương vị {String(index + 1).padStart(2, "0")}
-                      </span>
-                      <span
-                        className={`block font-display text-xl transition-colors duration-300 md:text-3xl ${
-                          isActive
-                            ? "text-luxury-ivory"
-                            : "text-luxury-ivory/65 group-hover:text-luxury-ivory"
-                        }`}
-                      >
-                        {ingredient.name}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-4">
-                      <span className="hidden font-sans text-[8px] uppercase tracking-[0.22em] text-luxury-ivory/30 sm:block">
-                        {ingredient.englishName}
-                      </span>
-                      <ArrowUpRight
-                        className={`h-4 w-4 transition-all duration-300 ${
-                          isActive
-                            ? "rotate-45 text-luxury-gold"
-                            : "text-luxury-ivory/20 group-hover:text-luxury-gold"
-                        }`}
-                      />
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
+            {activeIngredient?.imageUrl && (
+              <div
+                data-herb-reveal
+                className="relative mb-6 h-72 overflow-hidden border border-luxury-gold/25 bg-[#0d0d0b] md:h-80 xl:h-96"
+              >
+                <div ref={imageWrapRef} className="absolute inset-0">
+                  <img
+                    key={activeIngredient.id}
+                    loading="lazy"
+                    decoding="async"
+                    src={activeIngredient.imageUrl}
+                    alt={`Nguyên liệu ${activeIngredient.name}`}
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#090908]/80 via-transparent to-transparent" />
+                <div className="pointer-events-none absolute inset-3 border border-luxury-gold/15" />
+                <span className="absolute bottom-4 left-4 font-sans text-[8px] uppercase tracking-[0.3em] text-luxury-gold/80">
+                  Nguyên liệu tuyển chọn
+                </span>
+                <span className="absolute bottom-3 right-4 font-display text-3xl text-luxury-gold/80">
+                  {activeIngredient.character}
+                </span>
+              </div>
+            )}
 
             <div
               data-herb-reveal
-              className="mt-4 flex items-center justify-between border-b border-luxury-gold/15 pb-3"
+              className="mt-2 flex items-center justify-between border-b border-luxury-gold/15 pb-3"
             >
               <div className="flex items-center gap-2 text-luxury-gold/55">
                 <Sparkles className="h-3 w-3" />
                 <span className="font-sans text-[8px] uppercase tracking-[0.28em]">
-                  Chạm để giải mã từng tầng hương
+                  Cuộn để giải mã từng tầng hương
                 </span>
               </div>
               <span className="font-display text-xs text-luxury-ivory/25">五香</span>

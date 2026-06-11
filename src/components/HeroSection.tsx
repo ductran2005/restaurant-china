@@ -215,8 +215,9 @@ export default function HeroSection({ onScrollToStory, onOpenBooking }: HeroSect
       >
         <img
           ref={bgImgRef}
-          src="/images/peking-duck.png"
+          src="/images/peking-duck.webp"
           alt="Tinh Hoa Vịt Quay Bắc Kinh"
+          fetchPriority="high"
           referrerPolicy="no-referrer"
           className="w-full h-full object-cover origin-center opacity-0 filter brightness-[0.4] contrast-[1.1] will-change-transform"
         />
@@ -246,7 +247,7 @@ export default function HeroSection({ onScrollToStory, onOpenBooking }: HeroSect
       </div>
 
       {/* Content Container */}
-      <div className="relative w-full px-6 sm:px-8 md:px-16 xl:px-24 2xl:px-32 z-25 flex flex-col md:flex-row md:items-end justify-between gap-8 md:gap-12 select-none pt-12 md:pt-32 pb-4 h-full">
+      <div className="relative w-full px-6 sm:px-8 md:px-16 xl:px-24 2xl:px-32 z-25 flex flex-col lg:flex-row lg:items-end justify-between gap-8 lg:gap-12 select-none pt-12 md:pt-32 pb-4 h-full">
         {/* Left Side: Massive Editorial Typography */}
         <div className="flex-none flex flex-col">
           {/* Imperial Crest Detail */}
@@ -257,7 +258,7 @@ export default function HeroSection({ onScrollToStory, onOpenBooking }: HeroSect
             </span>
           </div>
 
-          <h1 className="font-serif font-black text-[2.4rem] xs:text-[3.2rem] sm:text-[4.5rem] md:text-[7.5rem] lg:text-[9rem] xl:text-[10rem] text-luxury-ivory leading-[1.1] md:leading-[1.15] tracking-normal uppercase flex flex-col gap-0.5 md:gap-3 italic select-none md:-ml-6 lg:-ml-12">
+          <h1 className="font-serif font-black text-[2.4rem] xs:text-[3.2rem] sm:text-[4.5rem] md:text-[6rem] lg:text-[5.5rem] xl:text-[7.5rem] 2xl:text-[10rem] text-luxury-ivory leading-[1.1] md:leading-[1.15] tracking-normal uppercase flex flex-col gap-0.5 md:gap-3 italic select-none md:-ml-6 lg:-ml-12">
             <span className="overflow-hidden block py-2 md:py-4 -my-2 md:-my-4">
               <span ref={title1Ref} className="block origin-left hover:text-luxury-gold transition-colors duration-500 whitespace-nowrap text-luxury-ivory py-1 opacity-0 will-change-transform">
                 ẨM THỰC
@@ -277,15 +278,15 @@ export default function HeroSection({ onScrollToStory, onOpenBooking }: HeroSect
         </div>
 
         {/* Right Side: Subtitle, CTA and Scroll Indicator */}
-        <div className="shrink-0 w-full md:w-[340px] xl:w-[380px] flex flex-col items-start md:items-end gap-6 md:gap-8 md:pb-6 md:text-right">
+        <div className="shrink-0 w-full lg:w-[340px] xl:w-[380px] flex flex-col items-start lg:items-end gap-6 md:gap-8 lg:pb-6 lg:text-right">
           <p
             ref={subRef}
-            className="text-luxury-ivory/80 text-sm xs:text-base md:text-xl lg:text-2xl font-serif italic leading-relaxed tracking-wide border-l md:border-l-0 md:border-r border-luxury-gold/30 pl-4 md:pl-0 md:pr-4 opacity-0 will-change-transform"
+            className="text-luxury-ivory/80 text-sm xs:text-base md:text-xl lg:text-2xl font-serif italic leading-relaxed tracking-wide border-l lg:border-l-0 lg:border-r border-luxury-gold/30 pl-4 lg:pl-0 lg:pr-4 opacity-0 will-change-transform"
           >
             Tinh hoa vịt quay Bắc Kinh được tái hiện bằng nghệ thuật hiện đại, mang đến hành trình vị giác đậm chất đế vương.
           </p>
 
-          <div ref={ctaRef} className="flex flex-col sm:flex-row sm:items-center md:justify-end gap-4 md:gap-6 w-full opacity-0 will-change-transform">
+          <div ref={ctaRef} className="flex flex-col sm:flex-row sm:items-center lg:justify-end gap-4 md:gap-6 w-full opacity-0 will-change-transform">
             <button
               onClick={onOpenBooking}
               className="bg-luxury-gold hover:bg-gold-hover text-luxury-black font-display font-bold text-xs tracking-[0.25em] h-12 md:h-14 px-8 md:px-10 transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-2xl shadow-luxury-gold/10 whitespace-nowrap rounded-none"
@@ -300,7 +301,7 @@ export default function HeroSection({ onScrollToStory, onOpenBooking }: HeroSect
               >
                 <ChevronDown className="w-5 h-5 text-luxury-ivory/50 group-hover:text-luxury-gold group-hover:translate-y-1 transition-all duration-500" />
               </button>
-              <div className="flex flex-col text-left md:text-right">
+              <div className="flex flex-col text-left lg:text-right">
                 <span className="text-[9px] uppercase tracking-[0.1em] text-luxury-ivory/40">ĐẦU BẾP TRƯỞNG</span>
                 <span className="text-xs font-bold tracking-[0.1em] text-luxury-ivory">TẦN THIÊN HÙNG</span>
               </div>
