@@ -3,179 +3,247 @@
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { INGREDIENTS, Ingredient } from "../data";
-import { Sparkles, Info } from "lucide-react";
+import { ArrowUpRight, Leaf, Sparkles } from "lucide-react";
+import { INGREDIENTS } from "../data";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function IngredientsSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const elementsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const [activeIngredient, setActiveIngredient] = useState<Ingredient | null>(null);
+  const containerRef = useRef<HTMLElement>(null);
+  const [activeId, setActiveId] = useState(INGREDIENTS[0]?.id ?? "");
+  const activeIngredient =
+    INGREDIENTS.find((ingredient) => ingredient.id === activeId) ?? INGREDIENTS[0];
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Create scroll parallax for each ingredient card of different speeds
-      INGREDIENTS.forEach((ing, index) => {
-        const el = elementsRef.current[index];
-        if (!el) return;
-
-        // Base scroll parallax effect
-        gsap.fromTo(
-          el,
-          { y: index % 2 === 0 ? 60 : -40 },
-          {
-            y: index % 2 === 0 ? -120 : 80,
-            ease: "none",
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1.2 * ing.speed,
-            }
-          }
-        );
-
-        // Gentle floating animation
-        gsap.to(el.querySelector(".floating-core"), {
-          y: "random(-12, 12)",
-          x: "random(-8, 8)",
-          rotation: "random(-6, 6)",
-          duration: "random(4, 7)",
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-        });
-      });
+      gsap.fromTo(
+        "[data-herb-reveal]",
+        { autoAlpha: 0, y: 34 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.1,
+          ease: "power3.out",
+          clearProps: "opacity,visibility,transform",
+          immediateRender: false,
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 70%",
+            once: true,
+          },
+        },
+      );
     }, containerRef);
 
-    return () => ctx.revert();
+    const revealFallback = window.setTimeout(() => {
+      gsap.set("[data-herb-reveal]", {
+        autoAlpha: 1,
+        y: 0,
+        clearProps: "opacity,visibility,transform",
+      });
+    }, 1800);
+
+    return () => {
+      window.clearTimeout(revealFallback);
+      ctx.revert();
+    };
   }, []);
+
+  useEffect(() => {
+    if (!activeIngredient) return;
+
+    const activeCard = containerRef.current?.querySelector(
+      `[data-ingredient-id="${activeIngredient.id}"]`,
+    );
+
+    if (activeCard) {
+      gsap.fromTo(
+        activeCard,
+        { scale: 0.985 },
+        { scale: 1, duration: 0.35, ease: "power2.out", clearProps: "transform" },
+      );
+    }
+  }, [activeIngredient]);
 
   return (
     <section
       id="ingredients"
       ref={containerRef}
-      className="relative min-h-screen bg-luxury-black py-32 overflow-hidden flex flex-col justify-between"
+      className="relative flex min-h-screen items-center overflow-hidden bg-[#090908] px-5 py-20 md:px-10 lg:px-16 lg:py-20"
     >
-      {/* Top Banner decoration */}
-      <div className="absolute right-8 top-16 w-0.5 h-20 bg-gradient-to-b from-luxury-gold/50 to-transparent pointer-none" />
-
-      {/* Main text Header */}
-      <div className="relative w-full max-w-7xl mx-auto px-8 md:px-16 z-20 mb-16 select-none">
-        <span className="text-luxury-gold text-xs font-display tracking-[0.4em] uppercase mb-2 block">
-          THẢO DƯỢC KÝ —
-        </span>
-        <h3 className="font-display font-medium text-4xl md:text-5xl lg:text-6xl text-luxury-ivory uppercase tracking-wide max-w-xl">
-          NĂM HOÀNG KIM <br />
-          <span className="text-luxury-gold">HƯƠNG THẢO</span> QUÝ BÁU
-        </h3>
-        <p className="font-sans text-xs md:text-sm text-luxury-ivory/60 max-w-md mt-6 leading-relaxed font-light">
-          Di sản hương vị đỉnh cao được thẩm thẩm từ sự gieo trồng khắt khe và phối trộn tỷ lệ mật pháp tuyệt mật lưu truyền.
-        </p>
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -left-40 top-1/3 h-[34rem] w-[34rem] rounded-full bg-luxury-gold/[0.035] blur-[120px]" />
+        <div className="absolute -right-36 -top-24 h-[28rem] w-[28rem] rounded-full bg-luxury-red/[0.06] blur-[120px]" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-luxury-gold/25 to-transparent" />
       </div>
 
-      {/* Floating Canvas area */}
-      <div className="relative flex-1 w-full max-w-7xl mx-auto px-4 md:px-8 h-[60vh] min-h-[500px]">
-        {/* Helper center info banner if no ingredients clicked */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center text-center max-w-xs z-10 p-6 border border-luxury-gold/5 bg-luxury-black/80 backdrop-blur-sm pointer-events-none">
-          <Info className="w-5 h-5 text-luxury-gold/50 mb-3 animate-pulse" />
-          <span className="font-display text-[10px] tracking-[0.25em] text-luxury-gold uppercase block">THẢO KÝ HOÀNG CƠ</span>
-          <span className="text-[10px] text-luxury-ivory/40 tracking-wider mt-1 block">Chạm vào từng thảo dược để giải mã mật tông hương vị</span>
+      <div className="relative mx-auto w-full max-w-7xl">
+        <div className="mb-10 flex items-center gap-4 lg:mb-8" data-herb-reveal>
+          <span className="font-display text-[10px] uppercase tracking-[0.45em] text-luxury-gold">
+            Thảo dược ký
+          </span>
+          <span className="h-px w-16 bg-luxury-gold/40" />
+          <span className="font-sans text-[9px] uppercase tracking-[0.28em] text-luxury-ivory/35">
+            Chương VI · Ngũ vị
+          </span>
         </div>
 
-        {INGREDIENTS.map((ing, idx) => {
-          // Fallback illustration or icon simulation using css and chinese script
-          return (
-            <div
-              key={ing.id}
-              ref={(el) => {
-                elementsRef.current[idx] = el;
-              }}
-              style={{
-                left: ing.x,
-                top: ing.y,
-              }}
-              className="absolute z-20 cursor-pointer transform -translate-x-1/2 -translate-y-1/2 active:scale-95 group"
-              onClick={() => setActiveIngredient(activeIngredient?.id === ing.id ? null : ing)}
-            >
-              <div className="floating-core relative flex flex-col items-center">
-                {/* Chinese Character background glowing */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <span className="font-display text-[6.5rem] md:text-[8rem] text-luxury-gold/[0.02] group-hover:text-luxury-gold/[0.04] transition-all duration-700 leading-none select-none">
-                    {ing.character}
-                  </span>
-                </div>
-
-                {/* Circular Golden Ingredient Capsule */}
-                <div className="relative w-16 h-16 md:w-20 md:h-20 bg-[#161616] border border-luxury-gold/25 group-hover:border-luxury-gold rounded-full flex items-center justify-center shadow-2xl overflow-hidden transition-all duration-500 hover:scale-110">
-                  <div className="absolute inset-1 border border-luxury-gold/10 rounded-full scale-95" />
-                  
-                  {/* Styled inner illustration representing ingredients */}
-                  <span className="font-display text-sm md:text-base text-luxury-gold font-bold z-10 group-hover:scale-115 transition-transform duration-500">
-                    {ing.character}
-                  </span>
-
-                  {/* Red stamp corner overlay */}
-                  <div className="absolute bottom-1 right-1 w-2.5 h-2.5 bg-luxury-red rounded-full" />
-                </div>
-
-                {/* Floating label tag */}
-                <div className="mt-3 bg-luxury-black/90 px-3 py-1 border border-luxury-gold/10 backdrop-blur-sm shadow-md flex flex-col items-center">
-                  <span className="text-[10px] font-display text-luxury-ivory tracking-widest font-semibold">
-                    {ing.name}
-                  </span>
-                  <span className="text-[7px] text-luxury-gold/60 font-sans tracking-widest uppercase mt-0.5">
-                    {ing.englishName}
-                  </span>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-
-        {/* Modal Info Card overlay when clicking on ingredient */}
-        {activeIngredient && (
-          <div className="absolute left-4 right-4 md:left-1/2 bottom-4 md:bottom-auto md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 max-w-md z-30 bg-[#0F0F0F] border border-luxury-gold/30 hover:border-luxury-gold/60 p-6 md:p-8 shadow-2xl transition-all duration-500 text-left select-none">
-            <button
-              onClick={() => setActiveIngredient(null)}
-              className="absolute top-4 right-4 text-luxury-gold/50 hover:text-luxury-gold text-lg transition-colors font-sans pointer-events-auto cursor-pointer"
-            >
-              ✕
-            </button>
-            <div className="flex items-center gap-2 mb-4 text-luxury-gold text-xs">
-              <Sparkles className="w-3.5 h-3.5 text-luxury-red" />
-              <span className="font-sans font-bold tracking-widest uppercase">MẬT KÝ THẢO DƯỢC</span>
-            </div>
-            
-            <h4 className="font-display font-medium text-2xl text-luxury-ivory tracking-wide flex items-baseline gap-2 mb-1">
-              {activeIngredient.name}
-              <span className="text-sm font-sans font-normal text-luxury-gold/65 italic">
-                ({activeIngredient.englishName})
+        <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+          <div className="lg:sticky lg:top-28 lg:self-start">
+            <div data-herb-reveal className="relative">
+              <span className="pointer-events-none absolute -left-3 -top-16 font-display text-[9rem] leading-none text-luxury-gold/[0.035] md:text-[12rem]">
+                香
               </span>
-            </h4>
-            <span className="font-display text-xs text-luxury-red tracking-[0.25em] uppercase mb-4 block">
-              Gia truyền thảo ký: {activeIngredient.character}
-            </span>
+              <h3 className="relative max-w-xl font-display text-5xl font-medium uppercase leading-[0.9] tracking-[-0.035em] text-luxury-ivory md:text-7xl lg:text-[4.6rem] xl:text-[5rem]">
+                Năm hương
+                <span className="mt-2 block italic text-luxury-gold">kể một chuyện</span>
+              </h3>
+            </div>
 
-            <p className="font-sans text-xs md:text-sm text-luxury-ivory/80 leading-relaxed tracking-wide font-light border-t border-luxury-gold/15 pt-4">
-              {activeIngredient.description}
+            <p
+              data-herb-reveal
+              className="mt-5 max-w-md border-l border-luxury-gold/35 pl-5 font-sans text-xs font-light leading-6 text-luxury-ivory/55 xl:text-sm"
+            >
+              Không chỉ tạo nên hương vị, mỗi thảo mộc còn giữ một vai trò trong
+              nghi thức thưởng thức vịt quay Bắc Kinh.
             </p>
 
-            <div className="mt-6 flex justify-end">
-              <button
-                onClick={() => setActiveIngredient(null)}
-                className="font-display text-[9px] text-luxury-gold tracking-[0.3em] uppercase hover:text-luxury-ivory duration-300"
+            {activeIngredient && (
+              <div
+                key={activeIngredient.id}
+                className="mt-6 animate-fadeIn border-t border-luxury-gold/20 pt-5"
+                aria-live="polite"
               >
-                ĐÃ LĨNH HỘI ✕
-              </button>
+                {activeIngredient.imageUrl && (
+                  <div className="group/image relative mb-4 h-40 max-w-lg overflow-hidden border border-luxury-gold/25 bg-[#0d0d0b] xl:h-44">
+                    <img
+                      src={activeIngredient.imageUrl}
+                      alt={`Nguyên liệu ${activeIngredient.name}`}
+                      className="h-full w-full object-contain transition-transform duration-1000 group-hover/image:scale-[1.02]"
+                    />
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#090908]/80 via-transparent to-transparent" />
+                    <div className="pointer-events-none absolute inset-3 border border-luxury-gold/15" />
+                    <span className="absolute bottom-4 left-4 font-sans text-[8px] uppercase tracking-[0.3em] text-luxury-gold/80">
+                      Nguyên liệu tuyển chọn
+                    </span>
+                    <span className="absolute bottom-3 right-4 font-display text-3xl text-luxury-gold/80">
+                      {activeIngredient.character}
+                    </span>
+                  </div>
+                )}
+
+                <div className="mb-3 flex items-start justify-between gap-4">
+                  <div>
+                    <span className="mb-2 block font-sans text-[9px] uppercase tracking-[0.35em] text-luxury-gold/65">
+                      Đang khám phá
+                    </span>
+                    <h4 className="font-display text-2xl text-luxury-ivory md:text-3xl">
+                      {activeIngredient.name}
+                    </h4>
+                    <span className="mt-1 block font-sans text-[10px] uppercase tracking-[0.25em] text-luxury-gold">
+                      {activeIngredient.englishName}
+                    </span>
+                  </div>
+                  <span className="font-display text-4xl text-luxury-gold/80">
+                    {activeIngredient.character}
+                  </span>
+                </div>
+                <p className="max-w-lg font-sans text-xs font-light leading-5 text-luxury-ivory/60 xl:leading-6">
+                  {activeIngredient.description}
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div className="relative">
+            <div className="absolute bottom-0 left-[2.1rem] top-0 w-px bg-gradient-to-b from-luxury-gold/40 via-luxury-gold/10 to-transparent md:left-[3.1rem]" />
+
+            <div className="space-y-2">
+              {INGREDIENTS.map((ingredient, index) => {
+                const isActive = ingredient.id === activeIngredient?.id;
+
+                return (
+                  <button
+                    key={ingredient.id}
+                    type="button"
+                    data-herb-reveal
+                    data-ingredient-id={ingredient.id}
+                    onClick={() => setActiveId(ingredient.id)}
+                    className={`group relative grid w-full grid-cols-[4.25rem_1fr_auto] items-center gap-4 overflow-hidden border px-3 py-4 text-left opacity-100 transition-all duration-500 md:grid-cols-[5rem_1fr_auto] md:gap-5 md:px-4 lg:py-4 xl:py-5 ${
+                      isActive
+                        ? "border-luxury-gold/60 bg-gradient-to-r from-luxury-gold/[0.13] via-luxury-gold/[0.06] to-transparent shadow-[0_18px_60px_rgba(0,0,0,0.28)]"
+                        : "border-luxury-ivory/[0.1] bg-luxury-ivory/[0.025] hover:border-luxury-gold/35 hover:bg-luxury-gold/[0.05]"
+                    }`}
+                    aria-pressed={isActive}
+                    aria-label={`Khám phá ${ingredient.name}`}
+                  >
+                    <span
+                      className={`absolute inset-y-0 left-0 w-0.5 bg-luxury-gold transition-opacity duration-500 ${
+                        isActive ? "opacity-100" : "opacity-0"
+                      }`}
+                    />
+                    <div
+                      className={`relative z-10 flex h-12 w-12 items-center justify-center rounded-full border bg-[#0d0d0b] font-display text-xs transition-all duration-500 md:h-14 md:w-14 md:text-sm ${
+                        isActive
+                          ? "scale-105 border-luxury-gold text-luxury-gold shadow-[0_0_35px_rgba(212,175,55,0.12)]"
+                          : "border-luxury-gold/20 text-luxury-gold/65 group-hover:border-luxury-gold/55 group-hover:text-luxury-gold"
+                      }`}
+                    >
+                      {ingredient.character}
+                      {isActive && (
+                        <span className="absolute -right-1 bottom-0 h-2 w-2 rounded-full bg-luxury-red" />
+                      )}
+                    </div>
+
+                    <div>
+                      <span className="mb-2 flex items-center gap-2 font-sans text-[8px] uppercase tracking-[0.28em] text-luxury-gold/45">
+                        <Leaf className="h-3 w-3" />
+                        Hương vị {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span
+                        className={`block font-display text-xl transition-colors duration-300 md:text-3xl ${
+                          isActive
+                            ? "text-luxury-ivory"
+                            : "text-luxury-ivory/65 group-hover:text-luxury-ivory"
+                        }`}
+                      >
+                        {ingredient.name}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                      <span className="hidden font-sans text-[8px] uppercase tracking-[0.22em] text-luxury-ivory/30 sm:block">
+                        {ingredient.englishName}
+                      </span>
+                      <ArrowUpRight
+                        className={`h-4 w-4 transition-all duration-300 ${
+                          isActive
+                            ? "rotate-45 text-luxury-gold"
+                            : "text-luxury-ivory/20 group-hover:text-luxury-gold"
+                        }`}
+                      />
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div
+              data-herb-reveal
+              className="mt-4 flex items-center justify-between border-b border-luxury-gold/15 pb-3"
+            >
+              <div className="flex items-center gap-2 text-luxury-gold/55">
+                <Sparkles className="h-3 w-3" />
+                <span className="font-sans text-[8px] uppercase tracking-[0.28em]">
+                  Chạm để giải mã từng tầng hương
+                </span>
+              </div>
+              <span className="font-display text-xs text-luxury-ivory/25">五香</span>
             </div>
           </div>
-        )}
+        </div>
       </div>
-
-      {/* Spacing Decoration lines */}
-      <div className="absolute bottom-8 left-8 right-8 h-[1px] bg-luxury-ivory/5 pointer-events-none hidden md:block" />
     </section>
   );
 }
