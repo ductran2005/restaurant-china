@@ -1,26 +1,277 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --wine: #8f1717;
+  --deep-wine: #250402;
+  --gold: #e8b750;
+  --cream: #fff3df;
+  --ink: #351611;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: var(--deep-wine);
+  color: var(--ink);
+  font-family: var(--font-vietnam), Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.display-font {
+  font-family: var(--font-serif), Georgia, serif;
+}
+
+.shell {
+  width: calc(100% - 40px);
+  max-width: 1180px;
+  margin-inline: auto;
+}
+
+.paper-pattern {
+  background-color: #fff2dd;
+  background-image:
+    linear-gradient(30deg, rgba(150, 38, 26, 0.035) 12%, transparent 12.5%, transparent 87%, rgba(150, 38, 26, 0.035) 87.5%),
+    linear-gradient(150deg, rgba(150, 38, 26, 0.035) 12%, transparent 12.5%, transparent 87%, rgba(150, 38, 26, 0.035) 87.5%);
+  background-size: 70px 120px;
+}
+
+.gold-button {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  min-height: 52px;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  border: 1px solid #d7462d;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #b52320, #861110);
+  padding: 0 30px;
+  color: #ffe7a6;
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 800;
+  box-shadow: 0 10px 30px rgba(64, 0, 0, 0.3);
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+.gold-button::after {
+  position: absolute;
+  inset: -40% auto -40% -45%;
+  width: 28%;
+  content: "";
+  background: linear-gradient(90deg, transparent, rgba(255, 238, 181, 0.55), transparent);
+  transform: skewX(-22deg);
+  transition: left 650ms ease;
+}
+
+.gold-button:hover {
+  filter: brightness(1.15);
+  transform: translateY(-2px);
+}
+
+.gold-button:hover::after {
+  left: 125%;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 750ms cubic-bezier(.2, .7, .2, 1),
+    transform 750ms cubic-bezier(.2, .7, .2, 1);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.header-enter {
+  animation: header-drop 700ms cubic-bezier(.2, .75, .2, 1) both;
+}
+
+.header-enter .header-logo,
+.header-enter .header-nav,
+.header-enter .header-cta {
+  animation: fade-up 650ms cubic-bezier(.2, .75, .2, 1) both;
+}
+
+.header-enter .header-nav {
+  animation: nav-fade 650ms 140ms cubic-bezier(.2, .75, .2, 1) both;
+}
+
+.header-enter .header-cta {
+  animation-delay: 240ms;
+}
+
+.hero-kenburns {
+  animation: hero-kenburns 16s ease-in-out infinite alternate;
+}
+
+.hero-grid-drift {
+  animation: grid-drift 12s linear infinite;
+}
+
+.float-soft {
+  animation: float-soft 5s ease-in-out infinite;
+}
+
+.pulse-ring {
+  animation: pulse-ring 2.8s ease-in-out infinite;
+}
+
+.hover-lift {
+  transition: transform 350ms ease, box-shadow 350ms ease, border-color 350ms ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-7px);
+  border-color: rgba(181, 77, 52, 0.45);
+  box-shadow: 0 18px 34px rgba(91, 33, 14, 0.18);
+}
+
+.image-breathe {
+  transition: transform 900ms cubic-bezier(.2, .7, .2, 1), filter 600ms ease;
+}
+
+.group:hover .image-breathe {
+  transform: scale(1.045);
+  filter: saturate(1.08) contrast(1.03);
+}
+
+.stagger-children.is-visible > * {
+  animation: fade-up 650ms cubic-bezier(.2, .75, .2, 1) both;
+}
+
+.stagger-children.is-visible > *:nth-child(2) { animation-delay: 90ms; }
+.stagger-children.is-visible > *:nth-child(3) { animation-delay: 180ms; }
+.stagger-children.is-visible > *:nth-child(4) { animation-delay: 270ms; }
+.stagger-children.is-visible > *:nth-child(5) { animation-delay: 360ms; }
+
+.footer-bg-drift {
+  animation: footer-drift 14s ease-in-out infinite alternate;
+}
+
+.footer-assurance {
+  transition: transform 300ms ease, color 300ms ease;
+}
+
+.footer-assurance:hover {
+  color: #ffd779;
+  transform: translateY(-4px);
+}
+
+.order-dialog[open] {
+  animation: dialog-in 280ms cubic-bezier(.2, .75, .2, 1) both;
+}
+
+@keyframes header-drop {
+  from { opacity: 0; transform: translateY(-100%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes nav-fade {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hero-kenburns {
+  from { transform: scale(1.01); }
+  to { transform: scale(1.07) translate3d(-0.8%, -0.4%, 0); }
+}
+
+@keyframes grid-drift {
+  to { background-position: 80px 0; }
+}
+
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+@keyframes pulse-ring {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(232, 183, 80, 0); }
+  50% { box-shadow: 0 0 0 7px rgba(232, 183, 80, 0.12); }
+}
+
+@keyframes footer-drift {
+  from { transform: scale(1.01); }
+  to { transform: scale(1.035) translateX(-0.4%); }
+}
+
+@keyframes dialog-in {
+  from { opacity: 0; transform: translateY(20px) scale(.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .shell {
+    width: calc(100% - 28px);
+  }
+
+  .gold-button {
+    padding-inline: 22px;
+    font-size: 13px;
+  }
+
+  .hero-kenburns {
+    animation: none;
+  }
+
+  .hero-virtues {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .hero-virtues > * {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .hover-lift:hover,
+  .footer-assurance:hover {
+    transform: none;
+  }
+
+  .order-dialog .gold-button {
+    min-height: 48px;
+  }
 }
